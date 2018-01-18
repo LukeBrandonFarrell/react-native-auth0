@@ -81,4 +81,18 @@ export default class Users {
       .patch(`/api/v2/users/${encodeURIComponent(payload.id)}`, {user_metadata: payload.metadata})
       .then((response) => responseHandler(response, {attributes, whitelist: true, rootOnly: true}));
   }
+  
+  linkUser(parameters = {}) {
+    const payload = apply({
+      parameters: {
+        id: { required: true },
+        provider: { required: true },
+        secound_account_id: { required: true },
+      }
+    }, parameters);
+    return this.client
+      .post(`/api/v2/users/${encodeURIComponent(payload.id)}/identities`, { provider: payload.provider, user_id: payload.secound_account_id })
+      .then((response) => responseHandler(response, {attributes, whitelist: true, rootOnly: true}));
+  }
 }
+
